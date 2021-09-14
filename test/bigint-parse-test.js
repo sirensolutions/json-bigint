@@ -9,13 +9,32 @@ describe("Testing native BigInt support: parse", function () {
     console.log('No native BigInt');
     return;
   }
-  var input = '{"big":92233720368547758070,"small":123}';
+  var input = '{"big":92233720368547758070,"small":123,"name":"name"}';
 
   it("Should show JSONbig does support parsing native BigInt", function (done) {
     var JSONbig = require('../index')({
       "useNativeBigInt": true
     });
     var obj = JSONbig.parse(input);
+    expect(obj.name).to.equal("name");
+    expect(obj.small, "small int").to.equal(123);
+    expect(obj.big.toString(), "big int").to.equal("92233720368547758070");
+    expect(typeof obj.big, "big int").to.equal('bigint');
+    done();
+  });
+
+  it("Should add hasOwnProperty method to the prototype of the parsed object", function (done) {
+    var JSONbig = require('../index')({
+      "useNativeBigInt": true
+    });
+    var obj = JSONbig.parse(input);
+    expect(Object.keys(obj.__proto__).length).to.equal(1);
+    expect(Object.keys(obj.__proto__)[0]).to.equal('hasOwnProperty');
+    expect(obj.hasOwnProperty("name")).to.equal(true);
+    expect(obj.hasOwnProperty("small")).to.equal(true);
+    expect(obj.hasOwnProperty("big")).to.equal(true);
+    expect(obj.hasOwnProperty("medium")).to.equal(false);
+    expect(obj.name).to.equal("name");
     expect(obj.small, "small int").to.equal(123);
     expect(obj.big.toString(), "big int").to.equal("92233720368547758070");
     expect(typeof obj.big, "big int").to.equal('bigint');
@@ -28,6 +47,7 @@ describe("Testing native BigInt support: parse", function () {
       "useNativeBigInt": true
     });
     var obj = JSONbig.parse(input);
+    expect(obj.name).to.equal("name");
     expect(obj.big.toString(), "big int").to.equal("92233720368547758070");
     expect(typeof obj.big, "big int").to.equal('bigint');
     expect(obj.small.toString(), "small int").to.equal("123");
