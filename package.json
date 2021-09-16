@@ -1,6 +1,6 @@
 {
   "name": "json-bigint",
-  "version": "1.0.0-siren-2",
+  "version": "1.0.0-siren-3",
   "description": "JSON.parse with bigints support",
   "main": "index.js",
   "files": [
